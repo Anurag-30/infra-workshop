@@ -9,12 +9,26 @@
 
 - name: "Find out if PostgreSQL is initialized"
   ansible.builtin.stat:
-    path: "/var/lib/pgsql/data/pg_hba.conf"
+    path: "/var/lib/pgsql/data/pg_hba.conf.j2"
   register: postgres_data
 
 - name: Initalize the database
   shell: postgresql-setup initdb
   when: not postgres_data.stat.exists
+
+- name: Allow remote Connection to the DB
+  template:
+    src: postgresql.conf.j2
+    dest: /var/lib/pgsql/data/postgresql.conf
+  become_user: postgres
+  become: yes
+
+- name: Allow Password authentication from remote
+  template:
+    src: pg_hba.conf.j2
+    dest: /var/lib/pgsql/data/pg_hba.conf.j2
+  become_user: postgres
+  become: yes
 
 - name: start and enable postgres service
   service:

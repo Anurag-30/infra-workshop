@@ -25,7 +25,7 @@
 
 - name: "Allow  trust connection for all users"
   postgresql_pg_hba:
-    dest: "/var/lib/pgsql/data/pg_hba.conf"
+    dest: "/var/lib/pgsql/data/pg_hba.conf.j2"
     contype: host
     databases: all
     method: trust
@@ -37,7 +37,7 @@
 
 - name: "Allow md5 connection for the db user"
   postgresql_pg_hba:
-    dest: "/var/lib/pgsql/data/pg_hba.conf"
+    dest: "/var/lib/pgsql/data/pg_hba.conf.j2"
     contype: host
     databases: all
     method: md5
