@@ -6,8 +6,8 @@
     - postgresql
     - postgresql-server
 
-- name: Initalize the database
-  shell: postgresql-setup initdb
+#- name: Initalize the database
+ # shell: postgresql-setup initdb
 
 
 - name: start and enable postgres service
