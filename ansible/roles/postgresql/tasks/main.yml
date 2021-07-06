@@ -16,7 +16,6 @@
   shell: postgresql-setup initdb
   when: not postgres_data.stat.exists
 
-
 - name: start and enable postgres service
   service:
     name: postgresql
