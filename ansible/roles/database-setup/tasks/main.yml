@@ -23,6 +23,18 @@
   become: yes
   become_user: postgres
 
+- name: "Allow  trust connection for all users"
+  postgresql_pg_hba:
+    dest: "/var/lib/pgsql/data/pg_hba.conf"
+    contype: host
+    databases: all
+    method: trusr
+    users: all
+    create: true
+  become: yes
+  become_user: postgres
+  notify: restart postgres
+
 - name: "Allow md5 connection for the db user"
   postgresql_pg_hba:
     dest: "/var/lib/pgsql/data/pg_hba.conf"
