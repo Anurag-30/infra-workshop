@@ -6,14 +6,9 @@
     - postgresql
     - postgresql-server
 
-- name: Check if databse is initialized
-  ansible.builtin.stat:
-    path: "/var/lib/pgsql/data/pg_hba.conf"
-    register: postgres_data
-
 - name: Initalize the database
   shell: postgresql-setup initdb
-  when: not postgres_data.stat.exists
+
 
 - name: start and enable postgres service
   service:
