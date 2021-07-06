@@ -1,0 +1,6 @@
+- name: Install & Configure Web Server
+  hosts: all
+  become: yes
+  roles:
+    - postgresql
+    - database-setup
