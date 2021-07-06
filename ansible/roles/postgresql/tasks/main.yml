@@ -6,14 +6,6 @@
     - postgresql
     - postgresql-server
 
-
-- name: Install Python Packages
-  pip:
-    name: psycopg2-binary
-    state: "present"
-
-
-
 - name: Check if databse is initialized
   ansible.builtin.stat:
     path: "/var/lib/pgsql/data/pg_hba.conf"
