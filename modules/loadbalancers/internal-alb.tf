@@ -1,6 +1,6 @@
 resource "aws_lb" "internal_alb" {
 
-  name               = "backend-internal-alb"
+  name               = "${var.application}-backend-${var.environment}"
   load_balancer_type = "application"
   internal           = true
   subnets            = [for subnet_ids in local.availability_zone_subnets : subnet_ids[0]] // pick a subnet from each availability_zone

@@ -13,3 +13,19 @@ variable "frontend_targetgrp_arn" {
 variable "vpc_id" {
   default = ""
 }
+
+variable "private_subnets" {
+  default = ""
+}
+
+variable "public_subnets" {
+  default = ""
+}
+
+variable "environment" {
+  default = ""
+}
+
+variable "application" {
+  default = "petclinic"
+}

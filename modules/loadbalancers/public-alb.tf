@@ -17,7 +17,7 @@ locals { // create a map with availability zones and corresponding subnets_id's
 
 resource "aws_lb" "public_alb" {
 
-  name               = "frontend-alb"
+  name               = "${var.application}-frontend-${var.environment}"
   load_balancer_type = "application"
   subnets            = [for subnet_ids in local.availability_zone_subnets : subnet_ids[0]] // pick a subnet from each availability_zone
   security_groups    = [aws_security_group.elb_security_group_http.id, aws_security_group.elb_security_group_https.id]
@@ -26,7 +26,7 @@ resource "aws_lb" "public_alb" {
 
 
 resource "aws_security_group" "elb_security_group_http" {
-  name        = "petclinic-allow_http_access"
+  name        = "${var.application}-http-${var.environment}-alb"
   description = "Allow traffic over port 80"
   vpc_id      = var.vpc_id
 
@@ -57,7 +57,7 @@ resource "aws_security_group" "elb_security_group_http" {
 }
 
 resource "aws_security_group" "elb_security_group_https" {
-  name        = "petclinic-allow_https_access"
+  name        = "${var.application}-https-${var.environment}-alb"
   description = "Allow traffic over port 443"
   vpc_id      = var.vpc_id
 

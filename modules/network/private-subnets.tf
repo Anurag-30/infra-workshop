@@ -11,6 +11,9 @@ resource "aws_subnet" "private_subnet" {
 }
 
 resource "aws_eip" "nat_ip" {
+  tags = {
+    Name = "petclinic-eip"
+  }
 }
 
 resource "random_integer" "random" {

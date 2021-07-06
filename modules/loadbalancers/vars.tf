@@ -4,3 +4,7 @@ variable "public_subnets" {
 variable "vpc_id" {
   default = ""
 }
+
+variable "application" {}
+
+variable "environment" {}

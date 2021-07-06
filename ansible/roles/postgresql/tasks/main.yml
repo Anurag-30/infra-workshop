@@ -1,6 +1,6 @@
 - name: Install Postgres
   package:
-    name : {{ item }}
+    name : "{{ item }}"
     state : "present"
   with_items:
     - postgresql
