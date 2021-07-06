@@ -28,7 +28,7 @@
     dest: "/var/lib/pgsql/data/pg_hba.conf"
     contype: host
     databases: all
-    method: trusr
+    method: trust
     users: all
     create: true
   become: yes
