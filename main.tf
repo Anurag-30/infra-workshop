@@ -27,6 +27,9 @@ module "ec2" {
   public_subnets         = module.vpc.public_subnets
   private_subnets        = module.vpc.private_subnets
   environment            = var.environment
+  db_name                = var.db_name
+  db_password            = var.db_password
+  db_user                = var.db_user
 
 }
 

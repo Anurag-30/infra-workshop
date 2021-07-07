@@ -29,3 +29,18 @@ variable "environment" {
 variable "application" {
   default = "petclinic"
 }
+
+variable "db_user" {
+  description = "Username for the database"
+  sensitive   = true
+}
+variable "db_password" {
+
+  description = "Password for the database"
+  sensitive   = true
+
+}
+variable "db_name" {
+  description = "Database name to create"
+  sensitive   = true
+}

@@ -1,7 +1,7 @@
 resource "null_resource" "public_key" {
 
   provisioner "local-exec" {
-    command                 = "yes y | ssh-keygen -q -t rsa -f petclinic-keypair -N '' -C centos@$(hostname)"
+    command = "yes y | ssh-keygen -q -t rsa -f petclinic-keypair -N '' -C centos@$(hostname)"
   }
 }
 

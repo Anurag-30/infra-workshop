@@ -9,3 +9,8 @@ environment = "stage"
 instance_type = "t2.medium"
 
 application = "petclinic"
+
+db_user     = "anurag"
+db_password = "password"
+db_name     = "anurag"
+
