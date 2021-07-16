@@ -1,0 +1,44 @@
+{
+    "variables": {
+    "instance_size": "t2.small",
+    "ami_name": "Petclinic-frontend",
+    "base_ami": "ami-0007417ec76523a33",
+    "ssh_username": "root"
+    },
+    "builders": [
+    {
+    "type": "amazon-ebs",
+    "region": "ap-south-1",
+    "source_ami": "{{user `base_ami`}}",
+    "instance_type": "{{user `instance_size`}}",
+    "ssh_username": "{{user `ssh_username`}}",
+    "ssh_timeout": "20m",
+    "ami_name": "{{user `ami_name`}}",
+    "ssh_pty" : "true",
+    "tags": {
+    "Name": "Petclinic",
+    "BuiltBy": "Packer"
+    }
+    }
+    ],
+    "description": "AWS image",
+    "provisioners": [
+    {
+    "type": "shell",
+    "inline": [
+    "sudo yum update -y",
+    "sudo yum install -y git",
+    "yum install -y gcc-c++ make",
+    "curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -",
+    "sudo yum install nodejs -y",
+    "git clone https://github.com/spring-petclinic/spring-petclinic-angular.git",
+    "rm -f spring-petclinic-angular/package.json"
+      ]
+    },
+    {
+    "type": "file",
+    "source": "./package.json",
+    "destination": "/root/spring-petclinic-angular/package.json"   
+    }
+    ]
+    }
