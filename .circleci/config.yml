@@ -1,0 +1,106 @@
+version: 2
+
+jobs:
+  plan:
+    working_directory: ~/petclinic
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - checkout
+      - run:
+          name: terraform init & plan
+          command: |
+            terraform init -input=false
+            terraform plan -out tfvpc -target=module.vpc -var-file=environments/stage/stage.tfvars
+      - persist_to_workspace:
+          root: ~/petclinic
+          paths:
+            - .
+
+  apply:
+    working_directory: ~/petclinic
+    docker:
+      - image: hashicorp/terraform:1.0.0
+    steps:
+      - attach_workspace:
+          at: ~/petclinic
+      - run:
+          name: terraform apply
+          command: |
+            terraform apply -target module.vpc -var-file=environments/stage/stage.tfvars
+            terraform apply -target module.lb -var-file=environments/stage/stage.tfvars
+            terraform apply -target module.ec2 -var-file=environments/stage/stage.tfvars
+      - persist_to_workspace:
+          root: ~/petclinic
+          paths:
+            - .
+    
+  destroy:
+    working_directory: ~/petclinic
+    docker:
+      - image: hashicorp/terraform:1.0.0
+    steps:
+      - attach_workspace:
+          at: ~/petclinic
+      - run:
+          name: terraform destroy
+          command: |
+            terraform destroy -target module.vpc -var-file=environments/stage/stage.tfvars
+            terraform destroy -target module.lb -var-file=environments/stage/stage.tfvars
+            terraform destroy -target module.ec2 -var-file=environments/stage/stage.tfvars
+      - persist_to_workspace:
+          root: ~/petclinic
+          paths:
+            - .
+
+  packer:
+    working_directory: ~/packer
+    docker:
+      - image: hashicorp/packer:latest
+    steps:
+      - checkout
+      - run:
+          name: packer image build
+          command: |
+            cd packer
+            packer build packer.json
+
+
+workflows:
+  packer_build:
+    jobs:
+      - packer
+          context: MY_SECRETS_STAGE
+
+  terraform:
+    jobs:
+      - plan
+          context: MY_SECRETS_STAGE
+      - approve-apply:
+          name: Approve terraform apply
+          type: approval
+          requires:
+            - plan
+      - apply
+          name: Terraform apply
+          context: MY_SECRETS_STAGE
+          requires:
+            - Approve terraform apply
+      - approve-destroy:
+          name: Approve Terraform destroy
+          type: approval
+          requires:
+              - Terraform apply
+      - destroy:
+          name: Terraform destroy
+          context: MY_SECRETS_STAGE
+          
+      
+
+
+
+  
+
+            
+
+        

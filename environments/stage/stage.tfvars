@@ -10,10 +10,6 @@ instance_type = "t2.medium"
 
 application = "petclinic"
 
-db_user     = "petclinic"
-db_password = "petclinic"
-db_name     = "petclinic"
-
 max_instance_count = 2
 
 min_instance_count = 2
