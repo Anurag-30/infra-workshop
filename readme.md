@@ -77,3 +77,5 @@ you can delete all the resources created by executing the following command.
 
 `terraform destroy  -var-file=environments/stage/stage.tfvars`
   
+
+If you want to store the terraform state file remotely you can uncomment the piece of code in provider.tf and update it with the appropriate details.
