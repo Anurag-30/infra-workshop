@@ -40,3 +40,7 @@ resource "aws_security_group" "bastion" {
     Name = "allow_ssh_access"
   }
 }
+
+output "bastion_ip" {
+  value = aws_instance.bastion.public_ip
+}

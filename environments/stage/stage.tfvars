@@ -13,3 +13,9 @@ application = "petclinic"
 max_instance_count = 2
 
 min_instance_count = 2
+
+db_name = "test" // replace the values before you run the code
+
+db_password = "test"
+
+db_user = "test"

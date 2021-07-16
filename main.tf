@@ -37,3 +37,17 @@ module "ec2" {
 
 }
 
+output "frontend_alb" {
+  value = module.lb.frontend_alb
+}
+
+output "backend_alb" {
+  value = module.lb.backend_lb
+}
+
+output "bastion_ip" {
+
+  value = module.ec2.bastion_ip
+
+
+}

@@ -78,3 +78,7 @@ resource "aws_security_group" "elb_security_group_https" {
   }
 
 }
+
+output "frontend_alb" {
+  value = aws_lb.public_alb.dns_name
+}

@@ -50,4 +50,3 @@ resource "aws_route_table_association" "public-subnet-association" {
 output "public_subnets" {
   value = aws_subnet.public_subnet.*.id
 }
-
