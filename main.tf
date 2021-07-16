@@ -32,8 +32,8 @@ module "ec2" {
   db_user                = var.db_user
   vpc_cidr_block         = var.vpc_cidr_block
   backend_lb_url         = module.lb.backend_lb
-
-
+  max_instance_count     = var.max_instance_count
+  min_instance_count     = var.min_instance_count
 
 }
 

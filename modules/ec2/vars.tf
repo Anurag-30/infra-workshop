@@ -52,3 +52,11 @@ variable "db_name" {
 variable "backend_lb_url" {
   default = ""
 }
+
+variable "max_instance_count" {
+  default = 1
+}
+
+variable "min_instance_count" {
+  default = 1
+}

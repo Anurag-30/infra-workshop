@@ -35,3 +35,11 @@ variable "db_name" {
   description = "Database name to create"
   sensitive   = true
 }
+
+variable "max_instance_count" {
+  default = 1
+}
+
+variable "min_instance_count" {
+  default = 1
+}

@@ -14,7 +14,7 @@ resource "aws_launch_template" "frontend_tmplate" {
   key_name               = aws_key_pair.ec2-keypair.key_name
   image_id               = data.aws_ami.frontend.id
   vpc_security_group_ids = [aws_security_group.frontend_security_group_http.id]
-  user_data              = "${base64encode(data.template_file.frontend.rendered)}"
+  user_data              = base64encode(data.template_file.frontend.rendered)
 
   tags = {
     Name = "${var.application}-frontend-${var.environment}"
@@ -34,8 +34,8 @@ data "template_file" "frontend" {
 resource "aws_autoscaling_group" "frontend_autoscaling_grp" {
   name                = "${var.application}-frontend-${var.environment}"
   vpc_zone_identifier = var.private_subnets
-  max_size            = 1
-  min_size            = 1
+  max_size            = var.max_instance_count
+  min_size            = var.min_instance_count
   target_group_arns   = ["${var.frontend_targetgrp_arn}"]
 
   launch_template {
