@@ -10,7 +10,8 @@ resource "aws_security_group" "frontend_security_group_http" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = [
-    "0.0.0.0/0"]
+    "0.0.0.0/0"
+    ]
 
   }
 
@@ -41,7 +42,8 @@ resource "aws_security_group" "backend_security_group_http" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = [
-    "0.0.0.0/0"]
+    "0.0.0.0/0"
+    ]
 
   }
 

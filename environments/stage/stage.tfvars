@@ -10,7 +10,7 @@ instance_type = "t2.medium"
 
 application = "petclinic"
 
-db_user     = "anurag"
-db_password = "password"
-db_name     = "anurag"
+db_user     = "petclinic"
+db_password = "petclinic"
+db_name     = "petclinic"
 

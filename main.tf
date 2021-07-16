@@ -30,6 +30,10 @@ module "ec2" {
   db_name                = var.db_name
   db_password            = var.db_password
   db_user                = var.db_user
+  vpc_cidr_block         = var.vpc_cidr_block
+  backend_lb_url         = module.lb.backend_lb
+
+
 
 }
 

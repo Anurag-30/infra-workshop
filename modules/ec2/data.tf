@@ -15,4 +15,20 @@ data "aws_ami" "image_id" {
 
 }
 
+data "aws_ami" "frontend" {
+
+  owners      = ["974267696219"]
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["Petclinic-frontend"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+}
 

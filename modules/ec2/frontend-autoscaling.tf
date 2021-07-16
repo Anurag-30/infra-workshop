@@ -12,11 +12,21 @@ resource "aws_launch_template" "frontend_tmplate" {
   }
   instance_type          = var.instance_type
   key_name               = aws_key_pair.ec2-keypair.key_name
-  image_id               = data.aws_ami.image_id.id
+  image_id               = data.aws_ami.frontend.id
   vpc_security_group_ids = [aws_security_group.frontend_security_group_http.id]
+  user_data              = "${base64encode(data.template_file.frontend.rendered)}"
 
   tags = {
-    Name = "${var.application}-backend-${var.environment}"
+    Name = "${var.application}-frontend-${var.environment}"
+  }
+}
+
+
+data "template_file" "frontend" {
+  template = file("${path.module}/scripts/frontend.sh.tpl")
+
+  vars = {
+    BACKEND_LB_URL = var.backend_lb_url
   }
 }
 
@@ -34,7 +44,7 @@ resource "aws_autoscaling_group" "frontend_autoscaling_grp" {
   }
   tag {
     key                 = "Name"
-    value               = "${var.application}-backend-${var.environment}"
+    value               = "${var.application}-frontend-${var.environment}"
     propagate_at_launch = true
   }
 }

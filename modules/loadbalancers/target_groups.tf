@@ -3,6 +3,10 @@ resource "aws_lb_target_group" "public_lb_target_group" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+  health_check {
+    path = "/petclinic/welcome"
+  }
+
 }
 
 resource "aws_alb_listener" "public_lb_target_group" {
@@ -21,6 +25,9 @@ resource "aws_lb_target_group" "internal_lb_target_group" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+  health_check {
+    path = "/petclinic/swagger-ui.html"
+  }
 }
 
 resource "aws_alb_listener" "internal_lb_target_group" {
