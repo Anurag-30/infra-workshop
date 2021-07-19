@@ -17,7 +17,7 @@ resource "aws_eip" "nat_ip" {
 }
 
 resource "random_integer" "random" {
-  max = length(aws_subnet.public_subnet)
+  max = length(aws_subnet.public_subnet)-1
   min = 0
 }
 
