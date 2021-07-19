@@ -41,6 +41,7 @@ For the backend this project uses a docker image. The `Dockerfile` is available 
 ## Running Terraform
 
 `terraform init` <br>
+
 There is folder named `environments` where you can find the customizable values for the setup. Make sure the Database related variables are configured appropriately.
 
 Since Database values are considered to be sensitive its a good idea not to update them in the file and check-in. Instead you can pass them as environment variables and read them from the machine you are running this code from.
