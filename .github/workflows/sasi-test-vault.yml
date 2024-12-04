@@ -28,25 +28,22 @@ jobs:
         run: |
           
           export SECRET_JSON=$(vault read -format json aws/creds/t)
-          AWS_ACCESS_KEY_ID=$(echo $SECRET_JSON | jq -r '.data.access_key')
-          echo "::add-mask::$AWS_ACCESS_KEY_ID"
-          echo "::set-output name=AWS_ACCESS_KEY_ID::$AWS_ACCESS_KEY_ID"
           
-          AWS_SECRET_ACCESS_KEY=$(echo $SECRET_JSON | jq -r '.data.secret_key')
-          echo "::add-mask::$AWS_SECRET_ACCESS_KEY"
-          echo "::set-output name=AWS_SECRET_ACCESS_KEY::$AWS_SECRET_ACCESS_KEY"
+          AWS_ACCESS_KEY_ID_RETRIEVED=$(echo $SECRET_JSON | jq -r '.data.access_key')
+          echo "::add-mask::$AWS_ACCESS_KEY_ID_RETRIEVED"
+          echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID_RETRIEVED" >> $GITHUB_ENV
           
-          AWS_SESSION_TOKEN=$(echo $SECRET_JSON | jq -r '.data.security_token')
-          echo "::add-mask::$AWS_SESSION_TOKEN"
-          echo "::set-output name=AWS_SESSION_TOKEN::$AWS_SESSION_TOKEN"
+          AWS_SECRET_ACCESS_KEY_RETRIEVED=$(echo $SECRET_JSON | jq -r '.data.secret_key')
+          echo "::add-mask::$AWS_SECRET_ACCESS_KEY_RETRIEVED"
+          echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY_RETRIEVED" >> $GITHUB_ENV
+          
+          AWS_SESSION_TOKEN_RETRIEVED=$(echo $SECRET_JSON | jq -r '.data.security_token')
+          echo "::add-mask::$AWS_SESSION_TOKEN_RETRIEVED"
+          echo "AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN_RETRIEVED" >> $GITHUB_ENV
+          
           echo "AWS credentials retrieved"
 
 
-      - name: Set AWS environment variables
-        run: |
-          echo "AWS_ACCESS_KEY_ID=${{ steps.aws_creds.outputs.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=${{ steps.aws_creds.outputs.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-          echo "AWS_SESSION_TOKEN=${{ steps.aws_creds.outputs.AWS_SESSION_TOKEN }}" >> $GITHUB_ENV
 
       - name: List AWS S3 buckets (example)
         run: |
