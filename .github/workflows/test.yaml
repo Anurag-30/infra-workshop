@@ -1,0 +1,30 @@
+name: AWS S3 Access with Vault Temp Creds
+
+on:
+  workflow_dispatch:
+
+jobs:
+  aws-s3:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Authenticate with Vault and Fetch AWS Temp Credentials
+    - name: Fetch AWS Temp Credentials from Vault
+      id: fetch-aws-creds
+      uses: hashicorp/vault-action@v2.6.0
+      with:
+        url: ${{ secrets.VAULT_ADDR }}
+        token: ${{ secrets.VAULT_TOKEN }}
+        secrets: |
+          aws/creds/my-role | aws_access_key_id | access_key
+          aws/creds/my-role | aws_secret_access_key | secret_key
+          aws/creds/my-role | aws_session_token | security_token
+
+    # Step 2: Use AWS CLI Action to List S3 Buckets
+    - name: AWS S3 List Buckets
+      uses: aws-actions/cli-action@v2
+      with:
+        aws-access-key-id: ${{ steps.fetch-aws-creds.outputs.aws_access_key_id }}
+        aws-secret-access-key: ${{ steps.fetch-aws-creds.outputs.aws_secret_access_key }}
+        aws-session-token: ${{ steps.fetch-aws-creds.outputs.aws_session_token }}
+        command: s3 ls
