@@ -27,13 +27,16 @@ jobs:
         id: aws_creds
         run: |
           
-          export AWS_ACCESS_KEY_ID=$(vault read -field=access_key aws/creds/t)
+          export SECRET_JSON=$(vault read -format json aws/creds/t)
+          AWS_ACCESS_KEY_ID=$(echo $SECRET_JSON | jq -r '.data.access_key')
           echo "::add-mask::$AWS_ACCESS_KEY_ID"
           echo "::set-output name=AWS_ACCESS_KEY_ID::$AWS_ACCESS_KEY_ID"
-          export AWS_SECRET_ACCESS_KEY=$(vault read -field=secret_key aws/creds/t)
+          
+          AWS_SECRET_ACCESS_KEY=$(echo $SECRET_JSON | jq -r '.data.secret_key')
           echo "::add-mask::$AWS_SECRET_ACCESS_KEY"
           echo "::set-output name=AWS_SECRET_ACCESS_KEY::$AWS_SECRET_ACCESS_KEY"
-          export AWS_SESSION_TOKEN=$(vault read -field=security_token aws/creds/t)
+          
+          AWS_SESSION_TOKEN=$(echo $SECRET_JSON | jq -r '.data.security_token')
           echo "::add-mask::$AWS_SESSION_TOKEN"
           echo "::set-output name=AWS_SESSION_TOKEN::$AWS_SESSION_TOKEN"
           echo "AWS credentials retrieved"
