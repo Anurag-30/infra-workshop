@@ -19,23 +19,30 @@ jobs:
           sudo apt-add-repository "deb https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install vault
 
-      - name: Login to Vault using AppRole
+      - name: Login to Vault using token 
         run: |
           vault login ${{ secrets.VAULT_TOKEN }}
           
       - name: Retrieve AWS IAM credentials from Vault
         id: aws_creds
         run: |
+          
           export AWS_ACCESS_KEY_ID=$(vault read -field=access_key aws/creds/t)
+          echo "::add-mask::$AWS_ACCESS_KEY_ID"
+          echo "::set-output name=some-token::$AWS_ACCESS_KEY_ID"
           export AWS_SECRET_ACCESS_KEY=$(vault read -field=secret_key aws/creds/t)
-          export AWS_SESSION_TOKEN=$(vault read -field=session_token aws/creds/t)
+          echo "::add-mask::$AWS_SECRET_ACCESS_KEY"
+          echo "::set-output name=some-token::$AWS_SECRET_ACCESS_KEY"
+          export AWS_SECURITY_TOKEN=$(vault read -field=security_token aws/creds/t)
+          echo "::add-mask::$AWS_SECURITY_TOKEN"
+          echo "::set-output name=some-token::$AWS_SECURITY_TOKEN"
           echo "AWS credentials retrieved"
 
       - name: Set AWS environment variables
         run: |
           echo "AWS_ACCESS_KEY_ID=${{ steps.aws_creds.outputs.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=${{ steps.aws_creds.outputs.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-          echo "AWS_SESSION_TOKEN=${{ steps.aws_creds.outputs.AWS_SESSION_TOKEN }}" >> $GITHUB_ENV
+          echo "AWS_SECURITY_TOKEN=${{ steps.aws_creds.outputs.AWS_SECURITY_TOKEN }}" >> $GITHUB_ENV
 
       - name: List AWS S3 buckets (example)
         run: |
