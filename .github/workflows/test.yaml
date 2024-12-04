@@ -16,9 +16,9 @@ jobs:
         url: ${{ secrets.VAULT_ADDR }}
         token: ${{ secrets.VAULT_TOKEN }}
         secrets: |
-          aws/creds/my-role | aws_access_key_id | access_key
-          aws/creds/my-role | aws_secret_access_key | secret_key
-          aws/creds/my-role | aws_session_token | security_token
+          aws/creds/t | aws_access_key_id | access_key
+          aws/creds/t | aws_secret_access_key | secret_key
+          aws/creds/t | aws_session_token | security_token
 
     # Step 2: Configure AWS CLI with Temp Credentials
     - name: Configure AWS CLI
