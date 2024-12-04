@@ -20,11 +20,15 @@ jobs:
           aws/creds/my-role | aws_secret_access_key | secret_key
           aws/creds/my-role | aws_session_token | security_token
 
-    # Step 2: Use AWS CLI Action to List S3 Buckets
-    - name: AWS S3 List Buckets
-      uses: aws-actions/cli-action@v2
+    # Step 2: Configure AWS CLI with Temp Credentials
+    - name: Configure AWS CLI
+      uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ steps.fetch-aws-creds.outputs.aws_access_key_id }}
         aws-secret-access-key: ${{ steps.fetch-aws-creds.outputs.aws_secret_access_key }}
         aws-session-token: ${{ steps.fetch-aws-creds.outputs.aws_session_token }}
-        command: s3 ls
+        aws-region: us-east-1 # Replace with your desired region
+
+    # Step 3: Use AWS CLI to List S3 Buckets
+    - name: AWS S3 List Buckets
+      run: aws s3 ls
