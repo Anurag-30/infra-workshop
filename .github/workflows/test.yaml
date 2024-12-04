@@ -1,7 +1,7 @@
 name: AWS S3 Access with Vault Temp Creds
 
 on:
-  workflow_dispatch:
+  push:
 
 jobs:
   aws-s3:
