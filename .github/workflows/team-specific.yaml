@@ -31,7 +31,7 @@ jobs:
         run: |
           # Source the environment file to set the environment variables
           set -o allexport
-          source aws_creds.env
+          mv aws_creds.env ~/.aws/credentials
           set +o allexport
 
       - name: Verify AWS credentials
