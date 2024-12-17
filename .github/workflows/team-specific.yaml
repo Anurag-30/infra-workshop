@@ -30,10 +30,7 @@ jobs:
       - name: Set Environment Variables from File
         run: |
           # Source the environment file to set the environment variables
-          ls
-          set -o allexport
           source aws_creds.env
-          set +o allexport
 
       - name: Verify AWS credentials
         run: |
