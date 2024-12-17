@@ -1,4 +1,4 @@
-name: Deploy to AWS using Vault
+name: Get AWS secrets using reusable workflow
 
 on:
   workflow_dispatch: 
