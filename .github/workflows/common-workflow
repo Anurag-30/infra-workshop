@@ -19,7 +19,7 @@ on:
 
 jobs:
   get-aws-credentials:
-    runs-on: [self-hosted]
+    runs-on: ubuntu
     env:
       VAULT_ADDR: ${{ inputs.vault_url }}
 
