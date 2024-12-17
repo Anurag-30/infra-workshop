@@ -17,7 +17,7 @@ jobs:
 
   deploy:
     needs: get-aws-credentials
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
