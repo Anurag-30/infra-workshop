@@ -1,0 +1,58 @@
+name: Vault AWS Credentials Workflow
+
+on:
+  workflow_call:
+    inputs:
+      vault_url:
+        required: true
+        type: string
+      vault_role:
+        required: true
+        type: string
+    secrets:
+      vault_token:
+        required: true
+    outputs:
+      aws_creds_file:
+        description: "File containing AWS credentials"
+        value: ${{ jobs.get-aws-credentials.outputs.aws_creds_file }}
+
+jobs:
+  get-aws-credentials:
+    runs-on: [self-hosted]
+    env:
+      VAULT_ADDR: ${{ inputs.vault_url }}
+
+    steps:
+      - name: Install Vault CLI
+        run: |
+          wget https://releases.hashicorp.com/vault/1.11.0/vault_1.11.0_linux_amd64.zip
+          unzip vault_1.11.0_linux_amd64.zip
+          sudo mv vault /usr/local/bin/
+          vault version
+
+      - name: Login to Vault using token 
+        run: |
+          echo "Attempting to login to Vault..."
+          vault login ${{ secrets.vault_token }}
+          
+      - name: Retrieve AWS IAM credentials from Vault
+        id: aws_creds
+        run: |
+          export SECRET_JSON=$(vault read -format json aws/creds/${{ inputs.vault_role }})
+          
+          AWS_ACCESS_KEY_ID_RETRIEVED=$(echo $SECRET_JSON | jq -r '.data.access_key')
+          AWS_SECRET_ACCESS_KEY_RETRIEVED=$(echo $SECRET_JSON | jq -r '.data.secret_key')
+          AWS_SESSION_TOKEN_RETRIEVED=$(echo $SECRET_JSON | jq -r '.data.security_token')
+
+          # Store credentials into a file
+          echo "[default]" > aws_creds.env
+          echo "aws_access_key_id=$AWS_ACCESS_KEY_ID_RETRIEVED" >> aws_creds.env
+          echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY_RETRIEVED" >> aws_creds.env
+          echo "aws_session_token=$AWS_SESSION_TOKEN_RETRIEVED" >> aws_creds.env
+
+          echo "::set-output name=aws_creds_file::aws_creds.env"
+
+      - name: Debug AWS credentials file
+        run: |
+          cat aws_creds.env
