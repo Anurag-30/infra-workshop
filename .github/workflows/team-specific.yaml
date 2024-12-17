@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-env:
-  AWS_SECRET_FILE_NAME: 'aws_creds.env'
 
 jobs:
   get-aws-credentials:
@@ -13,7 +11,7 @@ jobs:
     with:
       vault_url: 'http://15.206.188.81:8200'
       vault_role: 't'
-      env-file-name: ${{ env.AWS_SECRET_FILE_NAME }}
+      env-file-name: 'aws_creds.env'
     secrets:
       vault_token: ${{ secrets.VAULT_TOKEN }}
 
@@ -33,7 +31,7 @@ jobs:
         run: |
           # Source the environment file to set the environment variables
           set -o allexport
-          source ${{env.AWS_SECRET_FILE_NAME}}
+          source aws_creds.env
           set +o allexport
 
       - name: Verify AWS credentials
