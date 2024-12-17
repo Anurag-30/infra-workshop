@@ -5,6 +5,7 @@ on:
     branches:
       - master
 
+
 jobs:
   get-aws-credentials:
     uses: ./.github/workflows/common-workflow.yml
