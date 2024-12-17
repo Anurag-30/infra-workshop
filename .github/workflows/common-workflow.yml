@@ -20,6 +20,8 @@ on:
 jobs:
   get-aws-credentials:
     runs-on: ubuntu-latest
+    outputs:
+     aws_creds_file: ${{ steps.aws_creds.outputs.aws_creds_file_from_step }}
     env:
       VAULT_ADDR: ${{ inputs.vault_url }}
 
@@ -51,7 +53,7 @@ jobs:
           echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY_RETRIEVED" >> aws_creds.env
           echo "aws_session_token=$AWS_SESSION_TOKEN_RETRIEVED" >> aws_creds.env
 
-          echo "::set-output name=aws_creds_file::aws_creds.env"
+          echo "::set-output name=aws_creds_file_from_step::aws_creds.env"
 
       - name: Debug AWS credentials file
         run: |
