@@ -14,7 +14,7 @@ jobs:
       - name: Call the composite action to retrieve secrets from vault
         uses: Anurag-30/gh-action-workflows/vault-aws-action@main
         with:
-          vault-addr: ${{ env.VAULT_ADDR }}
+          vault-addr: "http://15.206.188.81:8200"
           secret-path: "aws/creds/t"
           vault-token: ${{ secrets.VAULT_TOKEN }}
 
