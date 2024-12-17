@@ -15,16 +15,10 @@ on:
     secrets:
       vault_token:
         required: true
-    outputs:
-      aws_creds_file:
-        description: "File containing AWS credentials"
-        value: ${{ jobs.get-aws-credentials.outputs.aws_creds_file }}
 
 jobs:
   get-aws-credentials:
     runs-on: ubuntu-latest
-    outputs:
-     aws_creds_file: ${{ steps.aws_creds.outputs.aws_creds_file_from_step }}
     env:
       VAULT_ADDR: ${{ inputs.vault_url }}
 
@@ -56,7 +50,6 @@ jobs:
           echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY_RETRIEVED" >> aws_creds.env
           echo "aws_session_token=$AWS_SESSION_TOKEN_RETRIEVED" >> aws_creds.env
 
-          
       - name: Upload Environment File as Artifact
         id: upload_artifact
         uses: actions/upload-artifact@v3
@@ -64,6 +57,3 @@ jobs:
           name: env-file
           path: ${{ inputs.env-file-name }} 
 
-      - name: Debug AWS credentials file
-        run: |
-          cat aws_creds.env
