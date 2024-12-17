@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - master
-
+env:
+  aws-secret-file-name: aws_creds.env
 
 jobs:
   get-aws-credentials:
@@ -12,6 +13,7 @@ jobs:
     with:
       vault_url: 'http://15.206.188.81:8200'
       vault_role: 't'
+      env-file-name: ${{ env.aws-secret-file-name }}
     secrets:
       vault_token: ${{ secrets.VAULT_TOKEN }}
 
@@ -21,11 +23,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        
+      - name: Download Environment File Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: env-file
 
-      - name: Load AWS credentials
+      - name: Set Environment Variables from File
         run: |
-          echo "Loading AWS credentials from file..."
-          cat ${{ needs.get-aws-credentials.outputs.aws_creds_file }} >> $GITHUB_ENV
+          # Source the environment file to set the environment variables
+          set -o allexport
+          source ${{ env.aws-secret-file-name }}
+          set +o allexport
 
       - name: Verify AWS credentials
         run: |
