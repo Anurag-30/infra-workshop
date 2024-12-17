@@ -13,11 +13,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         
-      - name: Call the reusable workflow to get AWS creds
-        uses: Anurag-30/gh-action-workflows/.github/workflows/get-vault-aws-secret.yml@main
+      - name: Call the composite action to retrieve secrets from vault
+        uses: Anurag-30/gh-action-workflows/vault-aws-action@main
         with:
           vault-addr: ${{ env.VAULT_ADDR }}
           secret-path: "aws/creds/t"
+          vault-token: ${{ secrets.VAULT_TOKEN }}
 
       - name: List AWS S3 buckets (example)
         run: |
