@@ -5,7 +5,7 @@ on:
     branches:
       - master
 env:
-  AWS_SECRET_FILE_NAME: aws_creds.env
+  AWS_SECRET_FILE_NAME: 'aws_creds.env'
 
 jobs:
   get-aws-credentials:
