@@ -28,7 +28,6 @@ jobs:
           name: env-file
 
       - name: Set Environment Variables from File
-        shell: bash
         run: |
           # Source the environment file to set the environment variables
           set -o allexport
