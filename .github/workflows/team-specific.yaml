@@ -13,7 +13,7 @@ jobs:
     with:
       vault_url: 'http://15.206.188.81:8200'
       vault_role: 't'
-      env-file-name: ${{env.AWS_SECRET_FILE_NAME}}
+      env-file-name: $AWS_SECRET_FILE_NAME
     secrets:
       vault_token: ${{ secrets.VAULT_TOKEN }}
 
