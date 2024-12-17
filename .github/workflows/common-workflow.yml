@@ -19,7 +19,7 @@ on:
 
 jobs:
   get-aws-credentials:
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     env:
       VAULT_ADDR: ${{ inputs.vault_url }}
 
