@@ -9,6 +9,9 @@ on:
       vault_role:
         required: true
         type: string
+      env-file-name:
+        required: true
+        type: string
     secrets:
       vault_token:
         required: true
@@ -53,7 +56,13 @@ jobs:
           echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY_RETRIEVED" >> aws_creds.env
           echo "aws_session_token=$AWS_SESSION_TOKEN_RETRIEVED" >> aws_creds.env
 
-          echo "::set-output name=aws_creds_file_from_step::aws_creds.env"
+          
+      - name: Upload Environment File as Artifact
+        id: upload_artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: env-file
+          path: ${{ inputs.env-file-name }} 
 
       - name: Debug AWS credentials file
         run: |
