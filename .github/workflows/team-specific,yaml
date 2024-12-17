@@ -1,0 +1,33 @@
+name: Team Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  get-aws-credentials:
+    uses: ./.github/workflows/common-workflow.yml
+    with:
+      vault_url: 'http://15.206.188.81:8200'
+      vault_role: 't'
+    secrets:
+      vault_token: ${{ secrets.VAULT_TOKEN }}
+
+  deploy:
+    needs: get-aws-credentials
+    runs-on: ubuntu
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Load AWS credentials
+        run: |
+          echo "Loading AWS credentials from file..."
+          cat ${{ needs.get-aws-credentials.outputs.aws_creds_file }} >> $GITHUB_ENV
+
+      - name: Verify AWS credentials
+        run: |
+          echo "AWS Access Key ID: $AWS_ACCESS_KEY_ID"
+          echo "Verifying AWS S3 access..."
+          aws s3 ls
